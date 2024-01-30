@@ -1,7 +1,7 @@
 const express = require("express")
 const zod = require("zod")
 const userRouter = express.Router();
-const {User} = require("../db")
+const {User, Account} = require("../db")
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 const { userMiddleware } = require("../middlewares/user");
@@ -35,6 +35,11 @@ userRouter.post("/signup", async (req, res) => {
         lastName: req.body.lastName,
     })
     const userId = user._id;
+    let random = Math.floor(Math.random() * 10000) + 1
+    const account = await Account.create({
+        userId : userId,
+        balance : random
+    })
     const token = jwt.sign({userId : userId},JWT_SECRET);
     res.status(200).json({
         message : "User added successfully",
@@ -42,7 +47,7 @@ userRouter.post("/signup", async (req, res) => {
     })
 })
 const signinBody = zod.object({
-    username : zod.string.email(),
+    username : zod.string().email(),
     password : zod.string()
 })
 
@@ -87,3 +92,24 @@ userRouter.put("/update",userMiddleware,async (req,res)=>{
         message : "Updated Successfully!"
     })
 })
+
+userRouter.get("/bulk",userMiddleware,async (req,res)=>{
+    const name = req.query.filter;
+    const users = await User.find({
+        $or : [{firstname : {"$regex":name}},
+            {lastName : {"$regex":name}}
+        ]
+    })
+    res.status(200).json({
+        users : users.map(function(user){
+            return ({
+                username : user.username,
+                firstName : user.firstName,
+                lastName : user.lastName,
+                _id : user._id
+            })
+        })
+    })
+})
+
+module.exports = {userRouter}
