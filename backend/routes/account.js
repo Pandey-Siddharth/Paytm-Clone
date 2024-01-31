@@ -18,7 +18,7 @@ accountRouter.get("/balance",userMiddleware,async (req,res)=>{
         balance
     })
 })
-
+//useless
 accountRouter.post("transfer",userMiddleware,async (req,res)=>{
 
     const session = await mongoose.startSession();
