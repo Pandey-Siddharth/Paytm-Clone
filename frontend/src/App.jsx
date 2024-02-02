@@ -1,9 +1,13 @@
+import{BrowserRouter,Route,Routes} from "react-router-dom";
+
 
 function App() {
 
   return (
     <div>
-        frontend start
+       <BrowserRouter>
+        
+       </BrowserRouter>
     </div>
   )
 }
