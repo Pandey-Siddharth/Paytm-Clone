@@ -1,4 +1,5 @@
 import{BrowserRouter,Route,Routes} from "react-router-dom";
+import Signup from "./pages/Signup";
 
 
 function App() {
@@ -6,7 +7,9 @@ function App() {
   return (
     <div>
        <BrowserRouter>
-        //Heelooo
+          <Routes>
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
        </BrowserRouter>
     </div>
   )
