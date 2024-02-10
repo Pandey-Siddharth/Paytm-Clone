@@ -1,7 +1,7 @@
 const express  = require("express")
 const { userMiddleware } = require("../middlewares/user")
 const {User, Account} = require("../db")
-
+const mongoose = require('mongoose');
 const accountRouter  = express.Router()
 
 accountRouter.get("/balance",userMiddleware,async (req,res)=>{
@@ -19,7 +19,7 @@ accountRouter.get("/balance",userMiddleware,async (req,res)=>{
     })
 })
 //useless
-accountRouter.post("transfer",userMiddleware,async (req,res)=>{
+accountRouter.post("/transfer",userMiddleware,async (req,res)=>{
 
     const session = await mongoose.startSession();
     session.startTransaction();

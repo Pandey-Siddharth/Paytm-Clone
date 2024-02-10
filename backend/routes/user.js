@@ -94,21 +94,26 @@ userRouter.put("/update",userMiddleware,async (req,res)=>{
 })
 
 userRouter.get("/bulk",userMiddleware,async (req,res)=>{
-    const name = req.query.filter;
+    const filter = req.query.filter || "";
     const users = await User.find({
-        $or : [{firstname : {"$regex":name}},
-            {lastName : {"$regex":name}}
-        ]
+        $or: [{
+            firstName: {
+                "$regex": filter
+            }
+        }, {
+            lastName: {
+                "$regex": filter
+            }
+        }]
     })
-    res.status(200).json({
-        users : users.map(function(user){
-            return ({
-                username : user.username,
-                firstName : user.firstName,
-                lastName : user.lastName,
-                _id : user._id
-            })
-        })
+
+    res.json({
+        users: users.map(user => ({
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            _id: user._id
+        }))
     })
 })
 
