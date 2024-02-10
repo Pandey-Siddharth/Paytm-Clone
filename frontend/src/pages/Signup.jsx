@@ -5,6 +5,7 @@ import InputBox from '../Components/InputBox'
 import Button from '../Components/Button'
 import { Route, useNavigate } from 'react-router-dom'
 import BottomWarning from '../Components/BottomWarning'
+import axios from "axios";
 
 function Signup() {
 
@@ -35,15 +36,16 @@ function Signup() {
             <div className="pt-4">
             <Button onClick={async () => {
             const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-              username,
-              FirstName,
-              LastName,
-              password
+            username: username,
+            password: password,
+            firstName: FirstName,
+            lastName: LastName,
             });
             localStorage.setItem("token", response.data.token)
             navigate("/dashboard")
           }} label={"Sign up"} />
           </div>
+          <BottomWarning label={"Already have an account?"} buttonText={"Sign in"} to={"/signin"} />
         </div>
       </div>
     </div>
